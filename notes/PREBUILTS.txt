@@ -6,12 +6,21 @@ install cmake
 apt-get install libssl-dev
 
 You need to build libarchive
+git clone -b v3.8.4 https://github.com/libarchive/libarchive.git
+cd libarchive
+mkdir build_arafa
+cd build_arafa
+cmake .. \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DENABLE_TEST=OFF \
+  -DENABLE_CAT=OFF \
+  -DENABLE_TAR=OFF \
+  -DENABLE_CPIO=OFF \
+  -DENABLE_INSTALL=ON
 
-cd 3rd_parties/libarchive
-mkdir build_once
-cd build_once
-./configure
 make -j16
+mkdir install
+make install DESTDIR=./install
 
 
 You need to build libsodium:
