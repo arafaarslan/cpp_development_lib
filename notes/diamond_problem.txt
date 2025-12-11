@@ -1,0 +1,30 @@
+
+class A { 
+    public: 
+    int x;
+    virtual void print(){
+        std::cout <<"Hello A"<<std::endl;
+    }
+};
+class B : virtual public A {
+    public:
+    void print(){
+        std::cout <<"Hello B"<<std::endl;
+    }
+};
+class C : virtual public A {
+    public:
+    void print(){
+        std::cout <<"Hello C"<<std::endl;
+    }
+};
+class D : public B, public C {
+    public: 
+    void print(){
+        std::cout <<"Hello D"<<std::endl;
+    }
+};  // A iki kere geliyor! virtual olmazsa
+
+
+    A* obj = new D();
+    obj->print();

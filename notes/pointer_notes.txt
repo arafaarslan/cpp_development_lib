@@ -1,0 +1,41 @@
+    //POINTER NOTES : 
+    int x = 5;
+    int y = 10;
+    int *const myPtr = &x;
+    //*myPtr = 10; // ✅ allowed
+    //myPtr = &y;  // ❌ NOT allowed - pointer is const
+   
+    const int *myPtr2 = &x;// equals to => int const *myPtr = &x;
+    //*myPtr2 = 10; // ❌ NOT allowed - value is const
+    //myPtr2 = &y;  // ✅ allowed - pointer is modifiable
+    
+    const int *const myPtr3 = &x;
+    //*myPtr3 = 10; // ❌ NOT allowed - value is const
+    //myPtr3 = &y;  // ❌ NOT allowed - pointer is const
+
+
+***************************************************************************************************************************
+***************************************************************************************************************************
+***************************************************************************************************************************
+
+    //POINTER NOTES 2: 
+
+    char x {'a'}; // assume this is assigned memory address 140
+    char& ref { x }; // ref is an lvalue reference to x (when used with a type, & means lvalue reference)
+    cout<<x;
+    cout<<ref;
+
+    x = 'b';
+    cout<<x;
+    cout<<ref;
+
+***************************************************************************************************************************
+***************************************************************************************************************************
+***************************************************************************************************************************
+
+    //POINTER NOTES 3: 
+
+    void* vp;
+    int y = 5;
+    vp = &y;
+    cout << *(int*)vp<<endl; // type cast gerek

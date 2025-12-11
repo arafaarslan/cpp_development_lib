@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+void test(int (*compare)(int a,int b));
+int ascending(int a, int b);
+int descending(int a, int b);
+
+int main(){
+
+    test(ascending);
+    //test(descending);
+
+}
+
+void test(int (*compare)(int a,int b)) {
+    if((*compare)(5,6)){
+        printf("true\n");
+    }else{
+        printf("false\n");
+    }
+}
+
+int ascending(int a, int b){
+    return b<a;
+}
+
+int descending(int a, int b){
+    return b>a;
+}

@@ -1,0 +1,31 @@
+sudo apt install gcc-7
+sudo apt-get install build-essential
+
+install cmake 
+
+apt-get install libssl-dev
+
+You need to build libarchive
+
+cd 3rd_parties/libarchive
+mkdir build_once
+cd build_once
+./configure
+make -j16
+
+
+You need to build libsodium:
+
+cd 3rd_parties/libsodium/
+mkdir build_once
+cd build_once
+./configure
+make -j16
+
+
+You need to build libdate
+cd 3rd_parties/date/
+mkdir build
+cd build
+cmake -DENABLE_DATE_TESTING=OFF -DBUILD_TZ_LIB=ON ../
+cmake --build . -j16 
