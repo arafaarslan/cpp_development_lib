@@ -3,7 +3,8 @@ sudo apt-get install build-essential
 
 install cmake 
 
-apt-get install libssl-dev
+sudo apt-get install libssl-dev
+sudo apt install libpsl-dev
 
 You need to build libarchive
 git clone -b v3.8.4 https://github.com/libarchive/libarchive.git
@@ -17,24 +18,54 @@ cmake .. \
   -DENABLE_TAR=OFF \
   -DENABLE_CPIO=OFF \
   -DENABLE_INSTALL=ON
-
 make -j16
 mkdir install
 make install DESTDIR=./install
 
 
 You need to build libsodium:
-
-cd 3rd_parties/libsodium/
-mkdir build_once
-cd build_once
-./configure
+git clone -b 1.0.20-RELEASE https://github.com/jedisct1/libsodium.git
+cd libsodium
+mkdir build_arafa
+cd build_arafa
+./../configure --prefix=/home/araf/projeler/libsodium/build_arafa/install
+mkdir install
 make -j16
+make install
 
 
 You need to build libdate
-cd 3rd_parties/date/
+git clone -b v3.0.4 https://github.com/HowardHinnant/date.git
+cd date/
 mkdir build
 cd build
-cmake -DENABLE_DATE_TESTING=OFF -DBUILD_TZ_LIB=ON ../
+cmake -DENABLE_DATE_TESTING=OFF -DBUILD_TZ_LIB=ON -DCMAKE_INSTALL_PREFIX=/home/araf/projeler/date/build/install ../
 cmake --build . -j16 
+cmake --install .
+
+
+You need to build openssl 3.0
+git clone -b openssl-3.0 https://github.com/openssl/openssl.git
+cd openssl
+mkdir build_arafa
+cd build_arafa
+./../config --prefix=/home/araf/projeler/openssl/build_arafa/install
+mkdir install
+make -j16
+make install
+
+You need to build curl
+cmake ..   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_INSTALL_PREFIX=/home/araf/projeler/curl/build_arafa/install  -DCURL_USE_OPENSSL=ON -DOPENSSL_ROOT_DIR=/home/araf/projeler/openssl/build_arafa/install -DOPENSSL_INCLUDE_DIR=/home/araf/projeler/openssl/build_arafa/install/include
+make -j16
+mkdir install
+make install
+
+You need to build json
+git clone -b v3.12.0 https://github.com/nlohmann/json.git
+cd json
+mkdir build_arafa
+cd build_arafa
+cmake -DCMAKE_INSTALL_PREFIX=/home/araf/projeler/json/build_arafa/install -DJSON_BuildTests=OFF -DJSON_Install=ON ../
+cmake --build . -j16
+mkdir install
+cmake --install .

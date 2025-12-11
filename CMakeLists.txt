@@ -9,47 +9,67 @@ message(STATUS "Selected platform: ${PLATFORM}")
 message(STATUS "Selected Built Type : ${CMAKE_BUILD_TYPE}")
 message(STATUS "Selected CMAKE_SYSTEM_NAME : ${CMAKE_SYSTEM_NAME}")
 message(STATUS "Selected CMAKE_GENERATOR : ${CMAKE_GENERATOR}")
+message (STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 
 # ----------------------------------------------------------
 # Collect all source files
 # ----------------------------------------------------------
 file(GLOB_RECURSE ARAFLIB_SOURCES
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/date/linux/include/date//tz.cpp
 )
-
 message(STATUS "ARAF_LIB SOURCES: ${ARAFLIB_SOURCES}")
-message (STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+
 
 # ----------------------------------------------------------
 # Create static library
 # ----------------------------------------------------------
-add_library(${PROJECT_NAME} STATIC ${ARAFLIB_SOURCES})
-
-# Public include paths (headers visible to users)
-target_include_directories(${PROJECT_NAME} PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/asio/asio/include>
-        $<INSTALL_INTERFACE:include>
+add_library(
+    ${PROJECT_NAME} STATIC 
+    ${ARAFLIB_SOURCES}
+    # ${ARAF_LIB_ROOT}/3rd_parties/date/src/tz.cpp
 )
 
-# C++11 required
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 
-# Debug flags
-target_compile_options(${PROJECT_NAME} PRIVATE
-    $<$<CONFIG:Debug>:-O0 -g>
+# ----------------------------------------------------------
+# Include directories
+# (Headers exported to users of araflib)
+# ----------------------------------------------------------
+find_package(OpenSSL REQUIRED)
+
+target_include_directories(${PROJECT_NAME} PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+        $<INSTALL_INTERFACE:include>
+
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/asio/asio/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/curl/linux/include/curl
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/date/linux/include/date
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/json/linux/include/nlohmann
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/libarchive/linux/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/libsodium/linux/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/libsodium/linux/include/sodium
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/openssl/linux/include/openssl
+)
+
+set(LIBCURL_LIB ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/curl/linux/lib/libcurl.so)
+set(LIBARCHIVE_LIB ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/libarchive/linux/lib/libarchive.a )
+set(LIBSODIUM_LIB ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/libsodium/linux/lib/libsodium.so.a )
+set(LIBDATE_TZ ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/date/linux/lib/libdate-tz.a )
+set(LIBOPENSSL ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/openssl/linux/lib64/libssl.a )
+
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+    ${LIBCURL_LIB}
+    ${LIBSODIUM_LIB}
+    ${LIBARCHIVE_LIB}
+    ${LIBDATE_TZ}
+    ${LIBOPENSSL}
+    pthread
 )
 
 # -----------------------------
 # Libraries
 # -----------------------------
 
-find_package(OpenSSL REQUIRED)
-
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    OpenSSL::SSL
-    OpenSSL::Crypto
-)
 
 # ----------------------------------------------------------
 # Add tests
