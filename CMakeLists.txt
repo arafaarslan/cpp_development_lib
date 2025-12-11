@@ -16,7 +16,7 @@ message (STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 # ----------------------------------------------------------
 file(GLOB_RECURSE ARAFLIB_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/date/linux/include/date//tz.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/date/linux/include/date/tz.cpp
 )
 message(STATUS "ARAF_LIB SOURCES: ${ARAFLIB_SOURCES}")
 
