@@ -3,8 +3,16 @@ sudo apt-get install build-essential
 
 install cmake 
 
+sudo apt update
 sudo apt-get install libssl-dev
 sudo apt install libpsl-dev
+
+sudo apt install -y \
+  zlib1g-dev \
+  libbz2-dev \
+  liblzma-dev \
+  libexpat1-dev \
+  libzstd-dev
 
 You need to build libarchive
 git clone -b v3.8.4 https://github.com/libarchive/libarchive.git

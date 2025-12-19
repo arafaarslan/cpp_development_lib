@@ -42,7 +42,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         $<INSTALL_INTERFACE:include>
 
         ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/asio/asio/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/curl/linux/include/curl
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/curl/linux/include
         ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/date/linux/include/date
         ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/json/linux/include/nlohmann
         ${CMAKE_CURRENT_SOURCE_DIR}/3rd_parties/libarchive/linux/include

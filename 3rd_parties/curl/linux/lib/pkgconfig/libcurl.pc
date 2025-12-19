@@ -22,20 +22,20 @@
 #
 ###########################################################################
 
-prefix=/home/araf/projeler/curl/install
+prefix=/home/araf/projeler/curl/build_arafa/install
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 supported_protocols="DICT FILE FTP FTPS GOPHER GOPHERS HTTP HTTPS IMAP IMAPS IPFS IPNS MQTT POP3 POP3S RTSP SMB SMBS SMTP SMTPS TELNET TFTP WS WSS"
-supported_features="alt-svc AsynchDNS HSTS HTTPS-proxy IPv6 Largefile libz NTLM PSL SSL threadsafe TLS-SRP UnixSockets zstd"
+supported_features="alt-svc AsynchDNS HSTS HTTPS-proxy IPv6 Largefile libz NTLM SSL threadsafe TLS-SRP UnixSockets zstd"
 
 Name: libcurl
 URL: https://curl.se/
 Description: Library to transfer files with HTTP, FTP, etc.
-Version: 8.18.0-DEV
-Requires: 
-Requires.private: openssl,zlib,libzstd,libpsl
-Libs: -L${libdir} -lcurl 
-Libs.private: -L/home/araf/projeler/openssl/build_arafa/install/lib64 -lpthread -lssl -lcrypto -lz -lzstd -lpsl -lcrypto -lz
-Cflags: -I${includedir} 
+Version: 8.17.0-DEV
+Requires: openssl,zlib
+Requires.private: openssl,zlib
+Libs: -L${libdir} -lcurl -lssl -lcrypto -lz -lzstd
+Libs.private: -lpthread -lssl -lcrypto -lz -lzstd
+Cflags: -I${includedir} -DCURL_STATICLIB
 Cflags.private: -DCURL_STATICLIB

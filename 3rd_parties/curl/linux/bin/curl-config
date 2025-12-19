@@ -25,7 +25,7 @@
 
 # shellcheck disable=SC2006
 
-prefix='/home/araf/projeler/curl/install'
+prefix='/home/araf/projeler/curl/build_arafa/install'
 # Used in 'libdir'
 # shellcheck disable=SC2034
 exec_prefix="${prefix}"
@@ -66,7 +66,7 @@ fi
 while test "$#" -gt 0; do
   case "$1" in
   --built-shared)
-    echo 'yes'
+    echo 'no'
     ;;
 
   --ca)
@@ -82,7 +82,7 @@ while test "$#" -gt 0; do
     ;;
 
   --feature|--features)
-    for feature in alt-svc AsynchDNS HSTS HTTPS-proxy IPv6 Largefile libz NTLM PSL SSL threadsafe TLS-SRP UnixSockets zstd ''; do
+    for feature in alt-svc AsynchDNS HSTS HTTPS-proxy IPv6 Largefile libz NTLM SSL threadsafe TLS-SRP UnixSockets zstd ''; do
       test -n "$feature" && echo "$feature"
     done
     ;;
@@ -95,7 +95,7 @@ while test "$#" -gt 0; do
     ;;
 
   --version)
-    echo 'libcurl 8.18.0-DEV'
+    echo 'libcurl 8.17.0-DEV'
     exit 0
     ;;
 
@@ -107,11 +107,11 @@ while test "$#" -gt 0; do
     # dash as that's used for things like version 1.2.3-pre1
     cpatch=`echo "$checkfor" | cut -d. -f3 | cut -d- -f1`
 
-    vmajor=`echo '8.18.0-DEV' | cut -d. -f1`
-    vminor=`echo '8.18.0-DEV' | cut -d. -f2`
+    vmajor=`echo '8.17.0-DEV' | cut -d. -f1`
+    vminor=`echo '8.17.0-DEV' | cut -d. -f2`
     # when extracting the patch part we strip off everything after a
     # dash as that's used for things like version 1.2.3-pre1
-    vpatch=`echo '8.18.0-DEV' | cut -d. -f3 | cut -d- -f1`
+    vpatch=`echo '8.17.0-DEV' | cut -d. -f3 | cut -d- -f1`
 
     if test "$vmajor" -gt "$cmajor"; then
       exit 0
@@ -127,12 +127,12 @@ while test "$#" -gt 0; do
       fi
     fi
 
-    echo "requested version $checkfor is newer than existing 8.18.0-DEV"
+    echo "requested version $checkfor is newer than existing 8.17.0-DEV"
     exit 1
     ;;
 
   --vernum)
-    echo '081200'
+    echo '081100'
     exit 0
     ;;
 
@@ -142,9 +142,9 @@ while test "$#" -gt 0; do
 
   --cflags)
     if test "${prefix}/include" = '/usr/include'; then
-      echo ''
+      echo '-DCURL_STATICLIB'
     else
-      echo " -I${prefix}/include"
+      echo "-DCURL_STATICLIB -I${prefix}/include"
     fi
     ;;
 
@@ -154,8 +154,8 @@ while test "$#" -gt 0; do
     else
       curllibdir=''
     fi
-    if test 'yes' = 'no'; then
-      echo "${curllibdir}-lcurl -lssl -lcrypto -lz -lzstd -lpsl -lcrypto -lz"
+    if test 'no' = 'no'; then
+      echo "${curllibdir}-lcurl -lssl -lcrypto -lz -lzstd"
     else
       echo "${curllibdir}-lcurl"
     fi
@@ -166,8 +166,8 @@ while test "$#" -gt 0; do
     ;;
 
   --static-libs)
-    if test 'no' != 'no'; then
-      echo "${exec_prefix}/lib/libcurl.a -L/home/araf/projeler/openssl/build_arafa/install/lib64 -lpthread -lssl -lcrypto -lz -lzstd -lpsl -lcrypto -lz"
+    if test 'yes' != 'no'; then
+      echo "${exec_prefix}/lib/libcurl.a -lpthread -lssl -lcrypto -lz -lzstd"
     else
       echo 'curl was built with static libraries disabled' >&2
       exit 1
