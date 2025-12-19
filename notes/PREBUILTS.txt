@@ -63,7 +63,27 @@ make -j16
 make install
 
 You need to build curl
-cmake ..   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_INSTALL_PREFIX=/home/araf/projeler/curl/build_arafa/install  -DCURL_USE_OPENSSL=ON -DOPENSSL_ROOT_DIR=/home/araf/projeler/openssl/build_arafa/install -DOPENSSL_INCLUDE_DIR=/home/araf/projeler/openssl/build_arafa/install/include
+cd curl
+mkdir build_arafa
+cd build_arafa
+cmake .. \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DBUILD_SHARED_LIBS=OFF \
+  -DCURL_STATICLIB=ON \
+  -DCMAKE_INSTALL_PREFIX=/home/araf/projeler/curl/build_arafa/install \
+  -DCURL_USE_OPENSSL=ON \
+  -DOPENSSL_ROOT_DIR=/home/araf/projeler/openssl/build_arafa/install \
+  -DOPENSSL_INCLUDE_DIR=/home/araf/projeler/openssl/build_arafa/install/include \
+  -DOPENSSL_USE_STATIC_LIBS=ON \
+  \
+  -DCURL_USE_LIBPSL=OFF \
+  -DCURL_USE_LIBIDN2=OFF \
+  -DCURL_USE_NGHTTP2=OFF \
+  \
+  -DCURL_ZSTD=OFF \
+  -DCURL_BROTLI=OFF \
+  -DCURL_ZLIB=ON \
+  -DBUILD_CURL_EXE=OFF
 make -j16
 mkdir install
 make install
