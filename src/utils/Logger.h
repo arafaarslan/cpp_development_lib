@@ -6,6 +6,7 @@
 #include <cstring>
 #include <iostream>
 #include <time.h>
+#include <mutex>
 
 //#define START_TIME_FROM_1970 
 
@@ -90,6 +91,7 @@ class Logger {
             if (Logger::level_ >= Level::kDebug) {
                 char time_str[100];
                 GetTime(&time_str[0], sizeof(time_str));
+                std::lock_guard<std::mutex> lock(log_mutex_);
                 std::cout <<  Logger::tag_ << "-D[" << time_str << "]: "<< s << std::endl;
             }
         }
@@ -98,6 +100,7 @@ class Logger {
             if (Logger::level_ >= Level::kInfo) {
                 char time_str[100];
                 GetTime(&time_str[0], sizeof(time_str));
+                std::lock_guard<std::mutex> lock(log_mutex_);
                 std::cout << Logger::tag_ << "-I[" << time_str << "]: "<< s << std::endl;
             }
         }
@@ -106,6 +109,7 @@ class Logger {
             if (Logger::level_ >= Level::kHighlight) {
                 char time_str[100];
                 GetTime(&time_str[0], sizeof(time_str));
+                std::lock_guard<std::mutex> lock(log_mutex_);
                 std::cout << Logger::tag_ << "-H[" << time_str << "]: "<< s << std::endl;
             }
         }
@@ -114,6 +118,7 @@ class Logger {
             if (Logger::level_ >= Level::kError) {
                 char time_str[100];
                 GetTime(&time_str[0], sizeof(time_str));
+                std::lock_guard<std::mutex> lock(log_mutex_);
                 std::cout  << ">>>>>>>>" << std::endl << "        " << Logger::tag_ << "-E[" << time_str << "]: "<< s << std::endl << "<<<<<<<<" << std::endl;
             }
         }
@@ -128,6 +133,7 @@ class Logger {
         
         static std::string tag_;
         static Level level_;
+        static std::mutex log_mutex_;
 };
 
 #define TRACE_LOG(message) Logger::Trace(message);
